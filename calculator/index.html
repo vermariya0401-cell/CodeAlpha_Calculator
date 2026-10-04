@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Glassmorphism Calculator</title>
+  <meta name="description" content="A sleek, responsive, and fully functional vanilla HTML5, CSS3, and JavaScript calculator with history, keyboard support, and glassmorphic UI.">
+  <meta property="og:title" content="Modern Glassmorphism Calculator">
+  <meta property="og:description" content="A sleek, responsive, and fully functional vanilla HTML5, CSS3, and JavaScript calculator with history, keyboard support, and glassmorphic UI.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Google Fonts for sleek typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow glow-3" aria-hidden="true"></div>
+
+  <main class="app-layout">
+    <!-- Calculator Card -->
+    <section class="calculator-container" aria-label="Calculator">
+      <!-- Calculator Header -->
+      <header class="calculator-header">
+        <div class="brand">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2" width="16" height="20" rx="3"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="16" y1="14" x2="16" y2="18"></line>
+            <path d="M16 10h.01"></path>
+            <path d="M12 10h.01"></path>
+            <path d="M8 10h.01"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M8 14h.01"></path>
+            <path d="M12 18h.01"></path>
+            <path d="M8 18h.01"></path>
+          </svg>
+          <span class="brand-name">Calculator</span>
+        </div>
+
+        <div class="header-actions">
+          <button id="shortcuts-toggle-btn" class="icon-btn" title="Keyboard Shortcuts" aria-label="Toggle keyboard shortcuts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <line x1="6" y1="8" x2="6" y2="8"></line>
+              <line x1="10" y1="8" x2="10" y2="8"></line>
+              <line x1="14" y1="8" x2="14" y2="8"></line>
+              <line x1="18" y1="8" x2="18" y2="8"></line>
+              <line x1="6" y1="12" x2="6" y2="12"></line>
+              <line x1="10" y1="12" x2="10" y2="12"></line>
+              <line x1="14" y1="12" x2="14" y2="12"></line>
+              <line x1="18" y1="12" x2="18" y2="12"></line>
+              <line x1="8" y1="16" x2="16" y2="16"></line>
+            </svg>
+          </button>
+          
+          <button id="history-toggle-btn" class="icon-btn" title="Toggle Calculation History" aria-label="Toggle calculation history">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="history-badge" class="history-badge" style="display: none;">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Display Screen -->
+      <div class="calculator-display" id="display-container" role="region" aria-live="polite" aria-label="Calculator Display">
+        <div class="display-previous" id="previous-operand"></div>
+        <div class="display-current" id="current-operand">0</div>
+      </div>
+
+      <!-- Keypad Grid -->
+      <div class="calculator-keypad" role="grid" aria-label="Calculator keypad">
+        <!-- Row 1 -->
+        <button type="button" class="btn btn-action" data-action="clear" id="btn-clear" aria-label="All Clear">AC</button>
+        <button type="button" class="btn btn-action" data-action="delete" id="btn-delete" aria-label="Delete">DEL</button>
+        <button type="button" class="btn btn-action" data-action="percent" id="btn-percent" aria-label="Percentage">%</button>
+        <button type="button" class="btn btn-operator" data-operator="÷" id="btn-divide" aria-label="Divide">÷</button>
+
+        <!-- Row 2 -->
+        <button type="button" class="btn btn-number" data-number="7">7</button>
+        <button type="button" class="btn btn-number" data-number="8">8</button>
+        <button type="button" class="btn btn-number" data-number="9">9</button>
+        <button type="button" class="btn btn-operator" data-operator="×" id="btn-multiply" aria-label="Multiply">×</button>
+
+        <!-- Row 3 -->
+        <button type="button" class="btn btn-number" data-number="4">4</button>
+        <button type="button" class="btn btn-number" data-number="5">5</button>
+        <button type="button" class="btn btn-number" data-number="6">6</button>
+        <button type="button" class="btn btn-operator" data-operator="-" id="btn-subtract" aria-label="Subtract">−</button>
+
+        <!-- Row 4 -->
+        <button type="button" class="btn btn-number" data-number="1">1</button>
+        <button type="button" class="btn btn-number" data-number="2">2</button>
+        <button type="button" class="btn btn-number" data-number="3">3</button>
+        <button type="button" class="btn btn-operator" data-operator="+" id="btn-add" aria-label="Add">+</button>
+
+        <!-- Row 5 -->
+        <button type="button" class="btn btn-action" data-action="negate" id="btn-negate" aria-label="Plus Minus" title="Toggle sign">±</button>
+        <button type="button" class="btn btn-number" data-number="0">0</button>
+        <button type="button" class="btn btn-number" data-action="decimal" id="btn-decimal" aria-label="Decimal point">.</button>
+        <button type="button" class="btn btn-equals" data-action="calculate" id="btn-equals" aria-label="Equals">=</button>
+      </div>
+    </section>
+
+    <!-- Calculation History Panel -->
+    <aside class="history-panel" id="history-panel" aria-label="Calculation History">
+      <div class="history-header">
+        <div class="history-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <h2>History</h2>
+        </div>
+        <div class="history-header-actions">
+          <button id="clear-history-btn" class="history-clear-btn" title="Clear all history" aria-label="Clear history">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Clear</span>
+          </button>
+          <button id="close-history-btn" class="icon-btn mobile-only" aria-label="Close history panel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="history-list" id="history-list" role="list">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </aside>
+  </main>
+
+  <!-- Keyboard Shortcuts Modal / Drawer -->
+  <div class="shortcuts-modal-overlay" id="shortcuts-modal" aria-hidden="true">
+    <div class="shortcuts-modal-card" role="dialog" aria-labelledby="shortcuts-title">
+      <div class="shortcuts-modal-header">
+        <h3 id="shortcuts-title">Keyboard Shortcuts</h3>
+        <button id="close-shortcuts-btn" class="icon-btn" aria-label="Close shortcuts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>0</kbd>–<kbd>9</kbd></span>
+          <span class="key-desc">Number digits</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></span>
+          <span class="key-desc">Operations</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>Enter</kbd> or <kbd>=</kbd></span>
+          <span class="key-desc">Calculate result</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>Backspace</kbd></span>
+          <span class="key-desc">Delete last digit</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>Esc</kbd> or <kbd>c</kbd></span>
+          <span class="key-desc">All clear (reset)</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>.</kbd></span>
+          <span class="key-desc">Decimal point</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="key-combo"><kbd>%</kbd></span>
+          <span class="key-desc">Percentage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

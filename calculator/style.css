@@ -1,0 +1,740 @@
+/* ==========================================================================
+   Modern Glassmorphism Calculator - Stylesheet
+   Pure CSS3 - Zero Frameworks
+   ========================================================================== */
+
+/* ---------------------------------------------------------
+   CSS Variables & Design Tokens
+   --------------------------------------------------------- */
+:root {
+  --bg-main: #07090e;
+  --bg-card: rgba(18, 24, 38, 0.72);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --bg-display: rgba(10, 14, 24, 0.65);
+  --bg-display-border: rgba(255, 255, 255, 0.06);
+
+  /* Button palettes */
+  --btn-num-bg: rgba(255, 255, 255, 0.04);
+  --btn-num-border: rgba(255, 255, 255, 0.06);
+  --btn-num-hover: rgba(255, 255, 255, 0.09);
+  --btn-num-text: #f1f5f9;
+
+  --btn-action-bg: rgba(148, 163, 184, 0.08);
+  --btn-action-border: rgba(148, 163, 184, 0.16);
+  --btn-action-hover: rgba(148, 163, 184, 0.15);
+  --btn-action-text: #cbd5e1;
+
+  --btn-clear-bg: rgba(244, 63, 94, 0.12);
+  --btn-clear-border: rgba(244, 63, 94, 0.25);
+  --btn-clear-hover: rgba(244, 63, 94, 0.22);
+  --btn-clear-text: #fb7185;
+
+  --btn-op-bg: rgba(99, 102, 241, 0.14);
+  --btn-op-border: rgba(99, 102, 241, 0.28);
+  --btn-op-hover: rgba(99, 102, 241, 0.25);
+  --btn-op-text: #a5b4fc;
+  --btn-op-active-bg: rgba(99, 102, 241, 0.35);
+
+  --btn-equals-bg: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --btn-equals-border: rgba(255, 255, 255, 0.2);
+  --btn-equals-text: #ffffff;
+  --btn-equals-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Shadows & Glass */
+  --glass-blur: 24px;
+  --card-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --transition-smooth: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------------------------------
+   Global Reset & Baseline
+   --------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+  padding: 24px 16px;
+}
+
+/* ---------------------------------------------------------
+   Ambient Background Glows
+   --------------------------------------------------------- */
+.ambient-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.glow-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+  top: -100px;
+  left: -100px;
+}
+
+.glow-2 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #9333ea 0%, transparent 70%);
+  bottom: -100px;
+  right: -80px;
+}
+
+.glow-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #0ea5e9 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+}
+
+/* ---------------------------------------------------------
+   App Layout (Centered Calculator + History)
+   --------------------------------------------------------- */
+.app-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  max-width: 860px;
+  width: 100%;
+  margin: auto;
+  transition: var(--transition-smooth);
+}
+
+/* ---------------------------------------------------------
+   Calculator Container Card
+   --------------------------------------------------------- */
+.calculator-container {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 28px;
+  box-shadow: var(--card-shadow), var(--inner-highlight);
+  padding: 24px;
+  width: 380px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+/* Header */
+.calculator-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #94a3b8;
+}
+
+.brand-icon {
+  width: 18px;
+  height: 18px;
+  stroke: #818cf8;
+}
+
+.brand-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #e2e8f0;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #94a3b8;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-smooth);
+}
+
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn.active {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #a5b4fc;
+}
+
+.history-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 2px solid var(--bg-main);
+}
+
+/* ---------------------------------------------------------
+   Calculator Display
+   --------------------------------------------------------- */
+.calculator-display {
+  background: var(--bg-display);
+  border: 1px solid var(--bg-display-border);
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-height: 105px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.display-previous {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: #64748b;
+  min-height: 22px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-smooth);
+}
+
+.display-current {
+  font-family: var(--font-mono);
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: right;
+  word-break: break-all;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+  transition: font-size 0.12s ease;
+}
+
+.display-current.error-text {
+  font-size: 1.3rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: #fb7185;
+}
+
+/* ---------------------------------------------------------
+   Keypad Grid & Buttons
+   --------------------------------------------------------- */
+.calculator-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 500;
+  height: 58px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+}
+
+/* Hover & Active / Keypress interactions */
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active,
+.btn.key-active {
+  transform: scale(0.93) translateY(0);
+}
+
+/* Number Buttons */
+.btn-number {
+  background: var(--btn-num-bg);
+  border: 1px solid var(--btn-num-border);
+  color: var(--btn-num-text);
+  box-shadow: var(--inner-highlight);
+}
+
+.btn-number:hover {
+  background: var(--btn-num-hover);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Action Buttons (DEL, %, ±) */
+.btn-action {
+  background: var(--btn-action-bg);
+  border: 1px solid var(--btn-action-border);
+  color: var(--btn-action-text);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.btn-action:hover {
+  background: var(--btn-action-hover);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+/* Special Clear Button (AC) */
+#btn-clear {
+  background: var(--btn-clear-bg);
+  border: 1px solid var(--btn-clear-border);
+  color: var(--btn-clear-text);
+  font-weight: 600;
+}
+
+#btn-clear:hover {
+  background: var(--btn-clear-hover);
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+/* Operator Buttons (+, -, ×, ÷) */
+.btn-operator {
+  background: var(--btn-op-bg);
+  border: 1px solid var(--btn-op-border);
+  color: var(--btn-op-text);
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.btn-operator:hover {
+  background: var(--btn-op-hover);
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+.btn-operator.op-active {
+  background: var(--btn-op-active-bg);
+  border-color: #818cf8;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+}
+
+/* Equals Button (=) - Visual Hero */
+.btn-equals {
+  background: var(--btn-equals-bg);
+  border: 1px solid var(--btn-equals-border);
+  color: var(--btn-equals-text);
+  font-size: 1.6rem;
+  font-weight: 600;
+  box-shadow: var(--btn-equals-shadow);
+}
+
+.btn-equals:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 10px 28px -4px rgba(99, 102, 241, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-equals:active,
+.btn-equals.key-active {
+  transform: scale(0.93) translateY(0);
+  filter: brightness(0.95);
+}
+
+/* ---------------------------------------------------------
+   History Panel
+   --------------------------------------------------------- */
+.history-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 28px;
+  box-shadow: var(--card-shadow), var(--inner-highlight);
+  padding: 24px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--transition-smooth);
+}
+
+.history-panel.panel-hidden {
+  display: none;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.history-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e2e8f0;
+}
+
+.history-title svg {
+  width: 18px;
+  height: 18px;
+  stroke: #818cf8;
+}
+
+.history-title h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.history-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.history-clear-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #94a3b8;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.history-clear-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.history-clear-btn:hover {
+  background: rgba(244, 63, 94, 0.12);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.3);
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+/* Custom Sleek Scrollbar */
+.history-list::-webkit-scrollbar {
+  width: 5px;
+}
+.history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  transition: all var(--transition-smooth);
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateX(-2px);
+}
+
+.history-item:active {
+  transform: scale(0.98);
+}
+
+.history-item-expr {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+}
+
+.history-item-res {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+}
+
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  color: #64748b;
+  text-align: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.history-empty svg {
+  width: 34px;
+  height: 34px;
+  stroke: #475569;
+}
+
+.history-empty p {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   Keyboard Shortcuts Modal
+   --------------------------------------------------------- */
+.shortcuts-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.shortcuts-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.shortcuts-modal-card {
+  background: rgba(18, 24, 38, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 22px;
+  width: 380px;
+  max-width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
+  transform: translateY(12px) scale(0.97);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shortcuts-modal-overlay.open .shortcuts-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.shortcuts-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.shortcuts-modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.shortcuts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.key-combo {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+kbd {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.key-desc {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* ---------------------------------------------------------
+   Responsive Design
+   --------------------------------------------------------- */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .calculator-container {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .btn {
+    height: 54px;
+    font-size: 1.2rem;
+  }
+
+  .display-current {
+    font-size: 2.3rem;
+  }
+
+  /* History as slide-up or attached drawer on mobile */
+  .history-panel {
+    width: 100%;
+    max-width: 360px;
+    border-radius: 24px;
+    padding: 20px;
+  }
+
+  .mobile-only {
+    display: flex;
+  }
+}
+
+@media (max-width: 380px) {
+  body {
+    padding: 12px 8px;
+  }
+
+  .calculator-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .calculator-keypad {
+    gap: 8px;
+  }
+
+  .btn {
+    height: 48px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+
+  .display-current {
+    font-size: 2rem;
+  }
+}

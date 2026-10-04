@@ -1,0 +1,6 @@
+{
+  "name": "Modern Glassmorphism Calculator",
+  "description": "A sleek, responsive, and fully functional vanilla HTML5, CSS3, and JavaScript calculator with history, keyboard support, and glassmorphic UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
